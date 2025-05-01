@@ -13,6 +13,7 @@ let scoreboard = { furia: 0, enemy: 0 };
 let map = 'Inferno';
 let remainingTime = '00:30';
 
+const knownChats = new Set();
 const inactivityTimers = new Map();
 let usersWatching = new Set();
 let matchUpdateHistory = [];
@@ -27,11 +28,11 @@ const furiaPlayers = [
 
 const teamEnemyName = "LIQUID";
 const enemyPlayers = [
-    { nome: 's1mple', emoji: '💀', kda: '25/10/4' },
-    { nome: 'b1t', emoji: '🔫', kda: '20/11/5' },
-    { nome: 'electronic', emoji: '⚙️', kda: '17/14/6' },
-    { nome: 'Perfecto', emoji: '🎯', kda: '12/16/4' },
-    { nome: 'Boombl4', emoji: '🧨', kda: '8/19/3' }
+    { nome: 'NAF', emoji: '💀', kda: '25/10/4' },
+    { nome: 'Twistzz ', emoji: '🔫', kda: '20/11/5' },
+    { nome: 'NertZ ', emoji: '⚙️', kda: '17/14/6' },
+    { nome: 'ultimate ', emoji: '🎯', kda: '12/16/4' },
+    { nome: 'siuhy ', emoji: '🧨', kda: '8/19/3' }
 ];
 
 const curiosities = [
@@ -43,7 +44,9 @@ const curiosities = [
 
 bot.onText(/\/start/, (msg) => {
     const userChatId = msg.chat.id;
+    knownChats.add(msg.chat.id);
     resetInactivityTimer(userChatId);
+    
     const name = msg.from.first_name || 'fã';
 
     const message = `Fala FUR ${name}! 👊
@@ -154,6 +157,21 @@ bot.onText(/\/init_live/, (msg) => {
     `;
     bot.sendMessage(msg.chat.id, message);
     bot.sendMessage(CHAT_ID_TORCIDA, `📢 Atualização para a torcida:\n${message}`);
+
+    const messageToFans = `🔥 *Nova partida começou!* 🔥
+
+🐾 A FURIA já está em campo e você não vai querer perder nenhum lance!
+
+📲 Use o comando /live para acompanhar as atualizações AO VIVO, lance a lance, com a torcida!
+
+💬 Quer vibrar junto com outros fãs? Use também /torcida_link para acessar o chat da torcida e interagir com nosso elenco de fãs da FURIA!
+
+*VAMOS FURIA!* 💥🐺`;
+    knownChats.forEach(chatId => {
+        if (chatId !== CHAT_ID_TORCIDA && chatId !== ADMIN_ID) {
+            bot.sendMessage(chatId, messageToFans, { parse_mode: "Markdown" });
+        }
+    });
 });
 
 bot.onText(/\/update (.+)/, (msg, match) => {
@@ -185,7 +203,6 @@ bot.onText(/\/end/, (msg) => {
     bot.sendMessage(userChatId, message);
     bot.sendMessage(CHAT_ID_TORCIDA, `📢 Atualização para a torcida:\n${message}`);
     usersWatching.clear();
-    resetInactivityTimer(userChatId);
 });
 
 function isUser(msg) {
