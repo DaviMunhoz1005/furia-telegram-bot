@@ -1,9 +1,8 @@
 <h1 align="center"> FURIA Telegram Bot </h1>
 
 <p align="center">
-  <img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=CONCLUÍDO&color=GREEN&style=for-the-badge"/>
+  > Status do Projeto: Concluido :heavy_check_mark:
 </p>
-
 
 ## Resumo do projeto
 Este projeto consiste no desenvolvimento de um chatbot para o Telegram, focado no time FURIA CS:GO, como parte de um Challenge no processo seletivo da FURIA. O bot oferece uma experiência interativa para os fãs, permitindo que recebam atualizações em tempo real sobre as partidas do FURIA, além de curiosidades sobre o time e o jogo. O bot também fornece acesso direto ao canal oficial da torcida do FURIA CS:GO no Telegram, fortalecendo a interação entre os fãs e o time.
