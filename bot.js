@@ -13,6 +13,7 @@ let scoreboard = { furia: 0, enemy: 0 };
 let map = 'Inferno';
 let remainingTime = '00:30';
 
+const inactivityTimers = new Map();
 let usersWatching = new Set();
 let matchUpdateHistory = [];
 
@@ -42,9 +43,10 @@ const curiosities = [
 
 bot.onText(/\/start/, (msg) => {
     const userChatId = msg.chat.id;
+    resetInactivityTimer(userChatId);
     const name = msg.from.first_name || 'fã';
 
-    const message = `Fala ${name}! 👊
+    const message = `Fala FUR ${name}! 👊
         Bem-vindo ao Chat Interativo da FURIA! 🐾
 
         Comandos disponíveis:
@@ -75,6 +77,7 @@ bot.onText(/\/game/, (msg) => {
     ⏱️ Tempo restante: ${remainingTime}`;
     
     bot.sendMessage(userChatId, status);
+    resetInactivityTimer(msg.chat.id);
 });
 
 bot.onText(/\/stats/, (msg) => {
@@ -103,6 +106,7 @@ ${enemyMsg}
     Vamos pra cima! 💥`;
 
     bot.sendMessage(chatId, message);
+    resetInactivityTimer(msg.chat.id);
 });
 
 bot.onText(/\/live/, (msg) => {
@@ -127,6 +131,7 @@ bot.onText(/\/live/, (msg) => {
             }
         })();
     }
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/init_live/, (msg) => {
@@ -180,6 +185,7 @@ bot.onText(/\/end/, (msg) => {
     bot.sendMessage(userChatId, message);
     bot.sendMessage(CHAT_ID_TORCIDA, `📢 Atualização para a torcida:\n${message}`);
     usersWatching.clear();
+    resetInactivityTimer(userChatId);
 });
 
 function isUser(msg) {
@@ -190,6 +196,7 @@ bot.onText(/\/curiosidade/, (msg) => {
     const userChatId = msg.chat.id;
     const randonCuriositie = curiosities[Math.floor(Math.random() * curiosities.length)];
     bot.sendMessage(userChatId, `🧠 Curiosidade: ${randonCuriositie}`);
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/torcida_link/, (msg) => {
@@ -199,6 +206,7 @@ bot.onText(/\/torcida_link/, (msg) => {
         'Entre no nosso grupo oficial de torcida no Telegram!\n' +
         '👉 https://t.me/+GF1dxw5NU0FhMzc5'
     );
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/inspiracao/, (msg) => {
@@ -208,6 +216,7 @@ bot.onText(/\/inspiracao/, (msg) => {
         'Você pode conhecer aqui (closed beta):\n' +
         '👉 https://wa.me/5511993404466'
     );
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/help/, (msg) => {
@@ -223,4 +232,21 @@ bot.onText(/\/help/, (msg) => {
         🆘 /help – Ver esta lista de comandos novamente`;
         
     bot.sendMessage(userChatId, helpMessage);
+    resetInactivityTimer(userChatId);
 });
+
+function resetInactivityTimer(userId) {
+    if (inactivityTimers.has(userId)) {
+        clearTimeout(inactivityTimers.get(userId));
+    }
+
+    const timer = setTimeout(() => {
+        const isWatching = usersWatching.has(userId);
+        if (!isWatching || !isPlaying) {
+            bot.sendMessage(userId, `👋 Vou fechar esse bate-papo, ok?\nQuando quiser conversar de novo, é só dar um salve! 💬\n\n📋 *Comandos úteis:*\n/start - Iniciar o bot\n/live - Ver status da live se estiver com alguma partida ativa\n/help - Ver comandos disponíveis`, { parse_mode: 'Markdown' });
+        }
+        inactivityTimers.delete(userId);
+    }, 5 * 60 * 1000); // 5 minutos
+
+    inactivityTimers.set(userId, timer);
+}
