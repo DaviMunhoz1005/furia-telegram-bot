@@ -10,11 +10,106 @@ console.log("Starting Bot...");
 
 let isPlaying = false;
 let scoreboard = { furia: 0, enemy: 0 };
-let map = 'Inferno';
-let remainingTime = '00:30';
 
+const csMaps = {
+    INFERNO: {
+        name: "Inferno",
+        short: "inf"
+    },
+    MIRAGE: {
+        name: "Mirage",
+        short: "mrg"
+    },
+    NUKE: {
+        name: "Nuke",
+        short: "nuke"
+    },
+    ANCIENT: {
+        name: "Ancient",
+        short: "anc"
+    },
+    OVERPASS: {
+        name: "Overpass",
+        short: "ovp"
+    },
+    VERTIGO: {
+        name: "Vertigo",
+        short: "vert"
+    },
+    DUST2: {
+        name: "Dust II",
+        short: "d2"
+    },
+    ANUBIS: {
+        name: "Anubis",
+        short: "anu"
+    }
+};
+
+// MODIFICA DE ACORDO COM O MAPA QUE ESTÁ JOGANDO
+const mapData = csMaps.ANUBIS;
+const map = mapData.name;
+
+// TEMPO QUE SE ATUALIZA SEMPRE NO /update MANUALMENTE
+let remainingTime = '2:00';
+
+const knownChats = new Set();
+const inactivityTimers = new Map();
 let usersWatching = new Set();
 let matchUpdateHistory = [];
+
+const rivalTeams = {
+    LIQUID: {
+        name: "Team Liquid",
+        players: [
+            { nome: "NAF", emoji: "🧠" },
+            { nome: "Twistzz", emoji: "⚡" },
+            { nome: "NertZ", emoji: "🎯" },
+            { nome: "ultimate", emoji: "🔫" },
+            { nome: "siuhy", emoji: "🛡️" }
+        ]
+    },
+    NAVI: {
+        name: "Natus Vincere",
+        players: [
+            { nome: "s1mple", emoji: "💀" },
+            { nome: "b1t", emoji: "🔫" },
+            { nome: "jL", emoji: "⚙️" },
+            { nome: "Aleksib", emoji: "🧠" },
+            { nome: "iM", emoji: "🔥" }
+        ]
+    },
+    VITALITY: {
+        name: "Team Vitality",
+        players: [
+            { nome: "ZywOo", emoji: "🎯" },
+            { nome: "flameZ", emoji: "🔥" },
+            { nome: "Spinx", emoji: "⚡" },
+            { nome: "Magisk", emoji: "🧱" },
+            { nome: "apEX", emoji: "🧠" }
+        ]
+    },
+    G2: {
+        name: "G2 Esports",
+        players: [
+            { nome: "NiKo", emoji: "💥" },
+            { nome: "huNter-", emoji: "🎯" },
+            { nome: "m0NESY", emoji: "🔫" },
+            { nome: "jks", emoji: "🛡️" },
+            { nome: "HooXi", emoji: "🧠" }
+        ]
+    },
+    ASTRALIS: {
+        name: "Astralis",
+        players: [
+        { nome: "dev1ce", emoji: "💀" },
+        { nome: "blameF", emoji: "🛡️" },
+        { nome: "Staehr", emoji: "⚡" },
+        { nome: "b0RUP", emoji: "🔥" },
+        { nome: "Buzz", emoji: "🔫" }
+        ]
+    }
+};
 
 const furiaPlayers = [
     { nome: 'KSCERATO', emoji: '🎯', kda: '22/10/5' },
@@ -24,14 +119,9 @@ const furiaPlayers = [
     { nome: 'arT', emoji: '🧠', kda: '9/18/9' }
 ];
 
-const teamEnemyName = "LIQUID";
-const enemyPlayers = [
-    { nome: 's1mple', emoji: '💀', kda: '25/10/4' },
-    { nome: 'b1t', emoji: '🔫', kda: '20/11/5' },
-    { nome: 'electronic', emoji: '⚙️', kda: '17/14/6' },
-    { nome: 'Perfecto', emoji: '🎯', kda: '12/16/4' },
-    { nome: 'Boombl4', emoji: '🧨', kda: '8/19/3' }
-];
+// MODIFICA DE ACORDO CONTRA QUEM ESTÁ JOGANDO
+const teamEnemyName = rivalTeams.ASTRALIS.name; 
+const enemyPlayers = rivalTeams.ASTRALIS.players;
 
 const curiosities = [
     'A FURIA foi fundada em 2017 por ex-jogadores e empreendedores brasileiros.',
@@ -42,9 +132,12 @@ const curiosities = [
 
 bot.onText(/\/start/, (msg) => {
     const userChatId = msg.chat.id;
+    knownChats.add(msg.chat.id);
+    resetInactivityTimer(userChatId);
+    
     const name = msg.from.first_name || 'fã';
 
-    const message = `Fala ${name}! 👊
+    const message = `Fala FUR ${name}! 👊
         Bem-vindo ao Chat Interativo da FURIA! 🐾
 
         Comandos disponíveis:
@@ -75,6 +168,7 @@ bot.onText(/\/game/, (msg) => {
     ⏱️ Tempo restante: ${remainingTime}`;
     
     bot.sendMessage(userChatId, status);
+    resetInactivityTimer(msg.chat.id);
 });
 
 bot.onText(/\/stats/, (msg) => {
@@ -103,6 +197,7 @@ ${enemyMsg}
     Vamos pra cima! 💥`;
 
     bot.sendMessage(chatId, message);
+    resetInactivityTimer(msg.chat.id);
 });
 
 bot.onText(/\/live/, (msg) => {
@@ -127,6 +222,7 @@ bot.onText(/\/live/, (msg) => {
             }
         })();
     }
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/init_live/, (msg) => {
@@ -137,8 +233,6 @@ bot.onText(/\/init_live/, (msg) => {
     console.log("Starting Live Chat!");
     isPlaying = true;
     scoreboard = { furia: 0, enemy: 0 };
-    remainingTime = '00:30';
-    map = 'Inferno';
     matchUpdateHistory = [];
     usersWatching.clear();
     const message = `✅ Partida ao vivo iniciada!
@@ -149,15 +243,31 @@ bot.onText(/\/init_live/, (msg) => {
     `;
     bot.sendMessage(msg.chat.id, message);
     bot.sendMessage(CHAT_ID_TORCIDA, `📢 Atualização para a torcida:\n${message}`);
+
+    const messageToFans = `🔥 *Nova partida começou!* 🔥
+
+🐾 A FURIA já está em campo e você não vai querer perder nenhum lance!
+
+📲 Use o comando /live para acompanhar as atualizações AO VIVO, lance a lance, com a torcida!
+
+💬 Quer vibrar junto com outros fãs? Use também /torcida_link para acessar o chat da torcida e interagir com nosso elenco de fãs da FURIA!
+
+*VAMOS FURIA!* 💥🐺`;
+    knownChats.forEach(chatId => {
+        if (chatId !== CHAT_ID_TORCIDA && chatId !== ADMIN_ID) {
+            bot.sendMessage(chatId, messageToFans, { parse_mode: "Markdown" });
+        }
+    });
 });
 
-bot.onText(/\/update (.+)/, (msg, match) => {
+bot.onText(/\/update (\d{2}:\d{2}) (.+)/, (msg, match) => {
     const userChatId = msg.chat.id;
     if (isUser(msg)) {
         return bot.sendMessage(userChatId, '❌ Você não tem permissão para usar esse comando.');
     }
     console.log("Sending Match Update!");
-    const updateMessage = match[1];
+    remainingTime = match[1];
+    const updateMessage = match[2];
     matchUpdateHistory.push(updateMessage);
     usersWatching.forEach(id => {
         bot.sendMessage(id, `🚨 Atualização: ${updateMessage}`);
@@ -190,6 +300,7 @@ bot.onText(/\/curiosidade/, (msg) => {
     const userChatId = msg.chat.id;
     const randonCuriositie = curiosities[Math.floor(Math.random() * curiosities.length)];
     bot.sendMessage(userChatId, `🧠 Curiosidade: ${randonCuriositie}`);
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/torcida_link/, (msg) => {
@@ -199,6 +310,7 @@ bot.onText(/\/torcida_link/, (msg) => {
         'Entre no nosso grupo oficial de torcida no Telegram!\n' +
         '👉 https://t.me/+GF1dxw5NU0FhMzc5'
     );
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/inspiracao/, (msg) => {
@@ -208,6 +320,7 @@ bot.onText(/\/inspiracao/, (msg) => {
         'Você pode conhecer aqui (closed beta):\n' +
         '👉 https://wa.me/5511993404466'
     );
+    resetInactivityTimer(userChatId);
 });
 
 bot.onText(/\/help/, (msg) => {
@@ -223,4 +336,21 @@ bot.onText(/\/help/, (msg) => {
         🆘 /help – Ver esta lista de comandos novamente`;
         
     bot.sendMessage(userChatId, helpMessage);
+    resetInactivityTimer(userChatId);
 });
+
+function resetInactivityTimer(userId) {
+    if (inactivityTimers.has(userId)) {
+        clearTimeout(inactivityTimers.get(userId));
+    }
+
+    const timer = setTimeout(() => {
+        const isWatching = usersWatching.has(userId);
+        if (!isWatching || !isPlaying) {
+            bot.sendMessage(userId, `👋 Vou fechar esse bate-papo, ok?\nQuando quiser conversar de novo, é só dar um salve! 💬\n\n📋 *Comandos úteis:*\n/start - Iniciar o bot\n/live - Ver status da live se estiver com alguma partida ativa\n/help - Ver comandos disponíveis`, { parse_mode: 'Markdown' });
+        }
+        inactivityTimers.delete(userId);
+    }, 5 * 60 * 1000); // 5 minutos
+
+    inactivityTimers.set(userId, timer);
+}
