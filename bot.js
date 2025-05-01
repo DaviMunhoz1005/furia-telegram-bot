@@ -49,7 +49,9 @@ const csMaps = {
 // MODIFICA DE ACORDO COM O MAPA QUE ESTÁ JOGANDO
 const mapData = csMaps.ANUBIS;
 const map = mapData.name;
-let remainingTime = '00:30';
+
+// TEMPO QUE SE ATUALIZA SEMPRE NO /update MANUALMENTE
+let remainingTime = '2:00';
 
 const knownChats = new Set();
 const inactivityTimers = new Map();
@@ -231,8 +233,6 @@ bot.onText(/\/init_live/, (msg) => {
     console.log("Starting Live Chat!");
     isPlaying = true;
     scoreboard = { furia: 0, enemy: 0 };
-    remainingTime = '00:30';
-    map = 'Inferno';
     matchUpdateHistory = [];
     usersWatching.clear();
     const message = `✅ Partida ao vivo iniciada!
@@ -260,13 +260,14 @@ bot.onText(/\/init_live/, (msg) => {
     });
 });
 
-bot.onText(/\/update (.+)/, (msg, match) => {
+bot.onText(/\/update (\d{2}:\d{2}) (.+)/, (msg, match) => {
     const userChatId = msg.chat.id;
     if (isUser(msg)) {
         return bot.sendMessage(userChatId, '❌ Você não tem permissão para usar esse comando.');
     }
     console.log("Sending Match Update!");
-    const updateMessage = match[1];
+    remainingTime = match[1];
+    const updateMessage = match[2];
     matchUpdateHistory.push(updateMessage);
     usersWatching.forEach(id => {
         bot.sendMessage(id, `🚨 Atualização: ${updateMessage}`);
