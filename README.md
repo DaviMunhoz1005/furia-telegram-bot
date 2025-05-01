@@ -8,6 +8,10 @@
 ## Resumo do projeto
 Este projeto consiste no desenvolvimento de um chatbot para o Telegram, focado no time FURIA CS:GO, como parte de um Challenge no processo seletivo da FURIA. O bot oferece uma experiência interativa para os fãs, permitindo que recebam atualizações em tempo real sobre as partidas do FURIA, além de curiosidades sobre o time e o jogo. O bot também fornece acesso direto ao canal oficial da torcida do FURIA CS:GO no Telegram, fortalecendo a interação entre os fãs e o time.
 
+## Hospedagem
+
+Este bot está hospedado na plataforma **Render**. O serviço não é mantido ativo 24/7 pois foi utilizado o plano gratuito, no momento que o bot fica durante muito tempo inativo ele pode hibernar, nesse caso é necessário startar manualmente o serviço novamente. No caso de inatividade as requisições para o boot podem demorar de 1 a 5 minutos.
+
 ## 🔨 Funcionalidades do projeto
 
 - `/start`: Inicia a interação com o bot mostrando todos os comandos disponíveis;
