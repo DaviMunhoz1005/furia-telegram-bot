@@ -10,13 +10,104 @@ console.log("Starting Bot...");
 
 let isPlaying = false;
 let scoreboard = { furia: 0, enemy: 0 };
-let map = 'Inferno';
+
+const csMaps = {
+    INFERNO: {
+        name: "Inferno",
+        short: "inf"
+    },
+    MIRAGE: {
+        name: "Mirage",
+        short: "mrg"
+    },
+    NUKE: {
+        name: "Nuke",
+        short: "nuke"
+    },
+    ANCIENT: {
+        name: "Ancient",
+        short: "anc"
+    },
+    OVERPASS: {
+        name: "Overpass",
+        short: "ovp"
+    },
+    VERTIGO: {
+        name: "Vertigo",
+        short: "vert"
+    },
+    DUST2: {
+        name: "Dust II",
+        short: "d2"
+    },
+    ANUBIS: {
+        name: "Anubis",
+        short: "anu"
+    }
+};
+
+// MODIFICA DE ACORDO COM O MAPA QUE ESTÁ JOGANDO
+const mapData = csMaps.ANUBIS;
+const map = mapData.name;
 let remainingTime = '00:30';
 
 const knownChats = new Set();
 const inactivityTimers = new Map();
 let usersWatching = new Set();
 let matchUpdateHistory = [];
+
+const rivalTeams = {
+    LIQUID: {
+        name: "Team Liquid",
+        players: [
+            { nome: "NAF", emoji: "🧠" },
+            { nome: "Twistzz", emoji: "⚡" },
+            { nome: "NertZ", emoji: "🎯" },
+            { nome: "ultimate", emoji: "🔫" },
+            { nome: "siuhy", emoji: "🛡️" }
+        ]
+    },
+    NAVI: {
+        name: "Natus Vincere",
+        players: [
+            { nome: "s1mple", emoji: "💀" },
+            { nome: "b1t", emoji: "🔫" },
+            { nome: "jL", emoji: "⚙️" },
+            { nome: "Aleksib", emoji: "🧠" },
+            { nome: "iM", emoji: "🔥" }
+        ]
+    },
+    VITALITY: {
+        name: "Team Vitality",
+        players: [
+            { nome: "ZywOo", emoji: "🎯" },
+            { nome: "flameZ", emoji: "🔥" },
+            { nome: "Spinx", emoji: "⚡" },
+            { nome: "Magisk", emoji: "🧱" },
+            { nome: "apEX", emoji: "🧠" }
+        ]
+    },
+    G2: {
+        name: "G2 Esports",
+        players: [
+            { nome: "NiKo", emoji: "💥" },
+            { nome: "huNter-", emoji: "🎯" },
+            { nome: "m0NESY", emoji: "🔫" },
+            { nome: "jks", emoji: "🛡️" },
+            { nome: "HooXi", emoji: "🧠" }
+        ]
+    },
+    ASTRALIS: {
+        name: "Astralis",
+        players: [
+        { nome: "dev1ce", emoji: "💀" },
+        { nome: "blameF", emoji: "🛡️" },
+        { nome: "Staehr", emoji: "⚡" },
+        { nome: "b0RUP", emoji: "🔥" },
+        { nome: "Buzz", emoji: "🔫" }
+        ]
+    }
+};
 
 const furiaPlayers = [
     { nome: 'KSCERATO', emoji: '🎯', kda: '22/10/5' },
@@ -26,14 +117,9 @@ const furiaPlayers = [
     { nome: 'arT', emoji: '🧠', kda: '9/18/9' }
 ];
 
-const teamEnemyName = "LIQUID";
-const enemyPlayers = [
-    { nome: 'NAF', emoji: '💀', kda: '25/10/4' },
-    { nome: 'Twistzz ', emoji: '🔫', kda: '20/11/5' },
-    { nome: 'NertZ ', emoji: '⚙️', kda: '17/14/6' },
-    { nome: 'ultimate ', emoji: '🎯', kda: '12/16/4' },
-    { nome: 'siuhy ', emoji: '🧨', kda: '8/19/3' }
-];
+// MODIFICA DE ACORDO CONTRA QUEM ESTÁ JOGANDO
+const teamEnemyName = rivalTeams.ASTRALIS.name; 
+const enemyPlayers = rivalTeams.ASTRALIS.players;
 
 const curiosities = [
     'A FURIA foi fundada em 2017 por ex-jogadores e empreendedores brasileiros.',
