@@ -9,7 +9,11 @@ Este projeto consiste no desenvolvimento de um chatbot para o Telegram, focado n
 
 ## Hospedagem
 
-Este bot está hospedado na plataforma Replit, que permite rodar aplicações diretamente na nuvem. No plano gratuito, o serviço pode hibernar após algum tempo de inatividade, especialmente se não houver acessos constantes ou um sistema de "ping" externo ativo. Caso isso aconteça, o bot pode parar de responder até que o serviço seja reativado automaticamente por uma nova requisição ou manualmente pelo desenvolvedor.
+Este bot está hospedado na plataforma Railway, que permite rodar aplicações diretamente na nuvem. Ao contrário de outros serviços, o Railway oferece uma hospedagem contínua sem a necessidade de um sistema de "ping" externo. Com isso, o bot permanece ativo durante todo o tempo, sem correr o risco de ser interrompido por inatividade.
+
+No Railway, o bot é configurado para reiniciar automaticamente sempre que houver necessidade, garantindo que ele continue funcionando sem a intervenção manual do desenvolvedor. Essa abordagem oferece maior estabilidade e confiabilidade para a execução do bot.
+
+Com a migração para o Railway, a questão da hibernação, que poderia ocorrer em plataformas gratuitas como o Replit, não é mais um problema. O bot permanece disponível para interação contínua com os usuários, sem interrupções.
 
 ## 🔨 Funcionalidades do projeto
 
