@@ -213,8 +213,7 @@ bot.onText(/\/live/, (msg) => {
         🗺️ Mapa: ${map}
         📊 Placar: FURIA ${scoreboard.furia} x ${scoreboard.enemy} ${teamEnemyName}
         ⏱️ Tempo restante: ${remainingTime}
-        🎬 Acesse a stream oficial: [Clique aqui](${linkLive})`);
-
+        🎬 Acesse a stream oficial: ${linkLive}`);
     if (matchUpdateHistory.length > 0) {
         (async () => {
             await bot.sendMessage(userChatId, '🕘 Enviando atualizações anteriores...');
@@ -254,7 +253,7 @@ bot.onText(/\/init_live/, (msg) => {
 
 💬 Quer vibrar junto com outros fãs? Use também /torcida_link para acessar o chat da torcida e interagir com nosso elenco de fãs da FURIA!
 
-🎬 Acesse a stream oficial: [Clique aqui](${linkLive})
+🎬 Acesse a stream oficial: ${linkLive}
 *VAMOS FURIA!* 💥🐺`;
     knownChats.forEach(chatId => {
         if (chatId !== CHAT_ID_TORCIDA && chatId !== ADMIN_ID) {
