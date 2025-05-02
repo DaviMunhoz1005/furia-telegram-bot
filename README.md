@@ -9,7 +9,7 @@ Este projeto consiste no desenvolvimento de um chatbot para o Telegram, focado n
 
 ## Hospedagem
 
-Este bot está hospedado na plataforma **Render**. O serviço não é mantido ativo 24/7 pois foi utilizado o plano gratuito, no momento que o bot fica durante muito tempo inativo ele pode hibernar, nesse caso é necessário startar manualmente o serviço novamente. No caso de inatividade as requisições para o boot podem demorar de 1 a 5 minutos.
+Este bot está hospedado na plataforma Replit, que permite rodar aplicações diretamente na nuvem. No plano gratuito, o serviço pode hibernar após algum tempo de inatividade, especialmente se não houver acessos constantes ou um sistema de "ping" externo ativo. Caso isso aconteça, o bot pode parar de responder até que o serviço seja reativado automaticamente por uma nova requisição ou manualmente pelo desenvolvedor.
 
 ## 🔨 Funcionalidades do projeto
 
