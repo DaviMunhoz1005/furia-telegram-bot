@@ -254,6 +254,7 @@ bot.onText(/\/init_live/, (msg) => {
 
 💬 Quer vibrar junto com outros fãs? Use também /torcida_link para acessar o chat da torcida e interagir com nosso elenco de fãs da FURIA!
 
+🎬 Acesse a stream oficial: [Clique aqui](${linkLive})
 *VAMOS FURIA!* 💥🐺`;
     knownChats.forEach(chatId => {
         if (chatId !== CHAT_ID_TORCIDA && chatId !== ADMIN_ID) {
