@@ -63,51 +63,51 @@ const rivalTeams = {
     LIQUID: {
         name: "Team Liquid",
         players: [
-            { nome: "NAF", emoji: "🧠" },
-            { nome: "Twistzz", emoji: "⚡" },
-            { nome: "NertZ", emoji: "🎯" },
-            { nome: "ultimate", emoji: "🔫" },
-            { nome: "siuhy", emoji: "🛡️" }
+            { nome: "NAF", emoji: "🧠", kda: "18/12/6" },
+            { nome: "Twistzz", emoji: "⚡", kda: "22/10/5" },
+            { nome: "NertZ", emoji: "🎯", kda: "17/15/3" },
+            { nome: "ultimate", emoji: "🔫", kda: "14/16/4" },
+            { nome: "siuhy", emoji: "🛡️", kda: "11/17/2" }
         ]
     },
     NAVI: {
         name: "Natus Vincere",
         players: [
-            { nome: "s1mple", emoji: "💀" },
-            { nome: "b1t", emoji: "🔫" },
-            { nome: "jL", emoji: "⚙️" },
-            { nome: "Aleksib", emoji: "🧠" },
-            { nome: "iM", emoji: "🔥" }
+            { nome: "s1mple", emoji: "💀", kda: "24/9/7" },
+            { nome: "b1t", emoji: "🔫", kda: "19/14/4" },
+            { nome: "jL", emoji: "⚙️", kda: "16/17/5" },
+            { nome: "Aleksib", emoji: "🧠", kda: "12/18/6" },
+            { nome: "iM", emoji: "🔥", kda: "21/13/2" }
         ]
     },
     VITALITY: {
         name: "Team Vitality",
         players: [
-            { nome: "ZywOo", emoji: "🎯" },
-            { nome: "flameZ", emoji: "🔥" },
-            { nome: "Spinx", emoji: "⚡" },
-            { nome: "Magisk", emoji: "🧱" },
-            { nome: "apEX", emoji: "🧠" }
+            { nome: "ZywOo", emoji: "🎯", kda: "25/8/9" },
+            { nome: "flameZ", emoji: "🔥", kda: "18/13/3" },
+            { nome: "Spinx", emoji: "⚡", kda: "15/15/6" },
+            { nome: "Magisk", emoji: "🧱", kda: "19/14/4" },
+            { nome: "apEX", emoji: "🧠", kda: "13/17/5" }
         ]
     },
     G2: {
         name: "G2 Esports",
         players: [
-            { nome: "NiKo", emoji: "💥" },
-            { nome: "huNter-", emoji: "🎯" },
-            { nome: "m0NESY", emoji: "🔫" },
-            { nome: "jks", emoji: "🛡️" },
-            { nome: "HooXi", emoji: "🧠" }
+            { nome: "NiKo", emoji: "💥", kda: "23/11/6" },
+            { nome: "huNter-", emoji: "🎯", kda: "20/13/5" },
+            { nome: "m0NESY", emoji: "🔫", kda: "26/10/7" },
+            { nome: "jks", emoji: "🛡️", kda: "14/16/3" },
+            { nome: "HooXi", emoji: "🧠", kda: "10/19/4" }
         ]
     },
     ASTRALIS: {
         name: "Astralis",
         players: [
-        { nome: "dev1ce", emoji: "💀" },
-        { nome: "blameF", emoji: "🛡️" },
-        { nome: "Staehr", emoji: "⚡" },
-        { nome: "b0RUP", emoji: "🔥" },
-        { nome: "Buzz", emoji: "🔫" }
+            { nome: "dev1ce", emoji: "💀", kda: "21/12/5" },
+            { nome: "blameF", emoji: "🛡️", kda: "19/13/6" },
+            { nome: "Staehr", emoji: "⚡", kda: "16/14/4" },
+            { nome: "b0RUP", emoji: "🔥", kda: "13/18/3" },
+            { nome: "Buzz", emoji: "🔫", kda: "17/15/2" }
         ]
     }
 };
