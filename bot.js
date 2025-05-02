@@ -52,6 +52,7 @@ const map = mapData.name;
 
 // TEMPO QUE SE ATUALIZA SEMPRE NO /update MANUALMENTE
 let remainingTime = '2:00';
+let linkLive = "https://www.twitch.tv/furiagg";
 
 const knownChats = new Set();
 const inactivityTimers = new Map();
@@ -211,7 +212,8 @@ bot.onText(/\/live/, (msg) => {
         
         🗺️ Mapa: ${map}
         📊 Placar: FURIA ${scoreboard.furia} x ${scoreboard.enemy} ${teamEnemyName}
-        ⏱️ Tempo restante: ${remainingTime}`);
+        ⏱️ Tempo restante: ${remainingTime}
+        🎬 Acesse a stream oficial: [Clique aqui](${linkLive})`);
 
     if (matchUpdateHistory.length > 0) {
         (async () => {
